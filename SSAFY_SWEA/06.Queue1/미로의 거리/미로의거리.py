@@ -1,28 +1,26 @@
 import sys ; sys.stdin = open('미로의거리input.txt')
 
-
+drs, dcs = [-1, 0, 1, 0], [0, 1, 0, -1]
 def in_range(x, y):
     global n
     return 0 <= x < n and 0 <= y < n
 
-def bfs(v):
-    q = [v]
-    visited[v] = 1
+def start_p()
+def bfs(r, c):
+    q = [(r, c)]
+    visited[r][c] = 1
+
     while q:
-        v = q.pop(0)
-        # 빼내고 이하 할 일
+        r, c = q.pop(0)
+        if arr[r][c] == 3:
+            return visited[r][c] - 2 # 출발지 칸수 제외
 
-        # --할일--
-
-        # 다음 노드 찾기
-        for w in adj[v]:
-            if visited[w] == 0:
-                q.append(w)
-                visited[w] = visited[v] + 1 # 거리이므로 누적되어야 함
+    for i in range(4):
+        nr, nc = r + drs[i], c + dcs[i]
 
 
 T = int(input())
 for tc in range(1, T+1):
     n = int(input())
     arr = [list(map(int, input().split())) for _ in range(n)]
-    visited = [0] * (n+1)
+    visited = [[0] * n for _ in range(n)]
