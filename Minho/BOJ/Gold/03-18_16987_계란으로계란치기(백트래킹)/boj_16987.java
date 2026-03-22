@@ -4,38 +4,48 @@ import java.io.*;
 public class Main {
 
     static int n ;
-    static int d ;
-    static int k;
-    static int c;
-    static int[] su;
+    static int[] w;
+    static int[] d;
+    static boolean [] hasBroken;
+    static int ans;
+    static void dfs(int lv,int lives) {
 
-
+        if( lv>=n) {
+            ans = Math.max(ans, lives);
+            return ;
+        }
+        if( d[lv] <=0){ dfs(lv+1,lives);return;}
+        for(int i = 0 ;i< n ;++i) {
+            if( i==lv ||d[i] <= 0 )continue;
+            d[lv]-= w[i];
+            d[i]-= w[lv];
+            int acc= 0;
+            if(d[lv]<=0)++acc;
+            if(d[i]<=0)++acc;
+            dfs(lv+1,lives+acc);
+            d[lv]+= w[i];
+            d[ i]+= w[lv];
+        }
+        ans = Math.max(ans, lives);
+    }
     public static void main(String[] args) throws Exception {
         StringTokenizer st ;
         BufferedReader br = new BufferedReader(new InputStreamReader (System.in));
         st = new StringTokenizer( br.readLine());
         n = Integer.parseInt(st.nextToken());
-        d = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
 
-        su = new int[n];
+
+        w = new int[n];
+        d = new int[n];
+        hasBroken =new boolean[n];
         for(int i = 0 ;i<n;++i) {
-            su[i]= Integer.parseInt(br.readLine());
+            st =new StringTokenizer(br.readLine());
+            d[i] = Integer.parseInt(st.nextToken());
+            w[i] = Integer.parseInt(st.nextToken());
         }
-        int ans = 0 ;
-        //30000*3000=90000000
-        for(int i = 0 ;i< n;++i) {
-            boolean[] map= new boolean[d+1];
-            int cnt = 0 ;
-            for(int j=0;j<k;++j) {
-                if(map[ su[(i+j)%n ] ] == true) continue;
-                map[ su[(i+j)%n]]=true;
-                ++cnt;
-            }
-            if(map[c] == false) ++cnt;
-            ans=Math.max(ans, cnt);
-        }
+
+        dfs(0,0);
+
 
         System.out.print(ans);
     }
