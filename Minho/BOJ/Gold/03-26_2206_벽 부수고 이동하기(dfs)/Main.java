@@ -11,7 +11,7 @@ public class Main {
 	static int ans = Integer.MAX_VALUE;
 	static boolean[][][] vis;
 	static int dist[][];
-
+ 
 	public static void main(String[] args) throws Exception {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
